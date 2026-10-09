@@ -16,6 +16,7 @@ Finished the first prototyping in HTML, CSS and JavaScript. Currently it is sing
 ### Plans
 Port the project to React and Express (Node.js front-end and back-end).
 Make a 2 player version so that players can test their skills with each others.
+The computer player only uses random single attacks, but in the future it will be replaced by a more intelligent AI with 60 credits, same as the human player.
 I will also attempt to make this project compatible with multiple database management systems.
 
 ### Disclaimer
