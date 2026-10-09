@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sea Battle Tactics</title>
+<link rel="stylesheet" href="sbt_nc.css">
+
+<body>
+    <header>
+        <h1>SEA BATTLE TACTICS</h1><button id="lang">日本語</button> <button
+            id="newGame" onclick="reset()">New game</button>
+    </header>
+    <main>
+        <section class="panel">
+            <h2 id="deploy">Fleet deployment</h2>
+            <div class="row"><span id="budgetLabel">Equipment budget</span>: <b id="budget">60</b>/60</div>
+            <div class="row"><select id="ship"></select><button id="rotate">↻ Rotate</button></div>
+            <div class="row"><select id="equip"></select></div>
+            <p id="setupHelp" class="small">Choose a ship, rotate if needed, then click your grid to deploy. Hover previews placement.
+            </p>
+            <div class="boards">
+                <div><b id="yourFleet">Your fleet</b>
+                    <div id="pboard" class="board"></div>
+                </div>
+                <div><b id="enemyWaters">Enemy waters</b>
+                    <div id="eboard" class="board"></div>
+                </div>
+            </div>
+            <div class="row"><button id="start">Begin battle</button><button id="clearDeployment" onclick="clearFleet()">Clear
+                    deployment</button></div>
+            <div id="fleet" class="small"></div>
+        </section>
+        <section class="panel">
+            <h2 id="combatControl">Combat control</h2>
+            <div class="row"><select id="attack"></select></div>
+            <p id="combatHelp" class="small">Hover enemy waters to preview a strike. All cells in a multi-cell strike resolve together. Repeated cells count as misses.</p>
+            <p id="status" class="status">Deploy all ships to begin.</p>
+            <h3 id="combatLog">Combat log</h3>
+            <div id="log"></div>
+        </section>
+    </main>
+    <script src="sbt_nc.js"></script>
+</body>
+
+</html>
