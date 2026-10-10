@@ -18,6 +18,7 @@ Port the project to React and Express (Node.js front-end and back-end).
 Make a 2 player version so that players can test their skills with each others.
 The computer player only uses random single attacks, but in the future it will be replaced by a more intelligent AI with 60 credits, same as the human player.
 I will also attempt to make this project compatible with multiple database management systems.
+I may also extend the project to support more languages in the future outside English and Japanese.
 
 ### Disclaimer
 I had not reused their animations, weapon sprites. I had not reverse engineered any part of the original ROM of the game, ensured that this is a clean-room engineering.
