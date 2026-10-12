@@ -1,0 +1,31 @@
+openapi: 3.0.3
+info:
+  title: Sea Battle Tactics API
+  version: 0.1.0
+  description: API for the Sea Battle Tactics prototype backend.
+servers:
+  - url: http://localhost:5000
+    description: Local development server
+paths:
+  /health:
+    get:
+      summary: Check backend availability
+      operationId: getHealth
+      responses:
+        "200":
+          description: The backend is running.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                  - message
+                properties:
+                  success:
+                    type: boolean
+                    enum:
+                      - true
+                  message:
+                    type: string
+                    example: Backend running successfully

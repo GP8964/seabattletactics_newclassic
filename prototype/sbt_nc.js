@@ -32,11 +32,13 @@
                 ]]
             ],
             text = {
-                en: { budget: 'Equipment budget', rotate: '↻ Rotate', setupHelp: 'Choose a ship, rotate if needed, then click your grid to deploy. Hover previews placement.', yourFleet: 'Your fleet', enemyWaters: 'Enemy waters', start: 'Begin battle', clear: 'Clear deployment', combat: 'Combat control', combatHelp: 'Hover enemy waters to preview a strike. All cells in a multi-cell strike resolve together. Repeated cells count as misses.', log: 'Combat log', newGame: 'New game', missile: 'Missile - free', deployed: 'ships deployed', invalid: 'Invalid placement.', yourTurn: 'Your turn', detected: 'Enemy fleet detected.', ready: 'Deploy all ships to begin.', strike: 'Strike resolved', other: 'other cell(s)', sunk: 'sunk', tomcat: 'sunk — Tomcat strike!', enemyFire: 'Enemy fires at', victory: 'Victory — enemy fleet neutralized.', radar: 'Radar scan', signal: 'Signal detected', noSignal: 'No signal', hit: 'HIT', miss: 'MISS', nearMiss: 'NEAR MISS', enemyHit: 'Enemy hit your ship.', enemyMiss: 'Enemy missed.' },
-                jp: { budget: '装備予算', rotate: '↻ 回転', setupHelp: '艦を選び、向きを決めて自軍グリッドをクリックすると配置できます。ホバーで配置を確認できます。', yourFleet: '自軍艦隊', enemyWaters: '敵海域', start: '戦闘開始', clear: '配置をクリア', combat: '戦闘管制', combatHelp: '敵海域をホバーすると攻撃範囲を確認できます。複数マス攻撃は同時に判定されます。攻撃済みのマスは外れになります。', log: '戦闘ログ', newGame: '新しいゲーム', missile: 'ミサイル - 無料', deployed: '隻を配置済み', invalid: '配置できません。', yourTurn: '自軍のターン', detected: '敵艦隊を探知しました。', ready: '全艦を配置して戦闘を開始してください。', strike: '攻撃結果', other: 'その他のマス', sunk: '撃沈', tomcat: '撃沈 — トムキャット攻撃！', enemyFire: '敵の攻撃地点', victory: '勝利 — 敵艦隊を撃滅しました。', radar: 'レーダー走査', signal: '信号を探知', noSignal: '信号なし', hit: '命中', miss: '外れ', nearMiss: '至近弾', enemyHit: '敵弾が自軍艦に命中しました。', enemyMiss: '敵の攻撃は外れました。' }
+                en: { budget: 'Equipment budget', rotate: '↻ Rotate', setupHelp: 'Choose a ship, rotate if needed, then click your grid to deploy. Hover previews placement.', yourFleet: 'Your fleet', enemyWaters: 'Enemy waters', start: 'Begin battle', clear: 'Clear deployment', combat: 'Combat control', combatHelp: 'Hover enemy waters to preview a strike. All cells in a multi-cell strike resolve together. Repeated cells count as misses.', log: 'Combat log', newGame: 'New game', deploy: 'Fleet deployment', missile: 'Missile - free', deployed: 'ships deployed', invalid: 'Invalid placement.', yourTurn: 'Your turn', detected: 'Enemy fleet detected.', ready: 'Deploy all ships to begin.', victory: 'Victory — enemy fleet neutralized.', radarResult: (detected, clear) => `Radar scan: ${detected} signal(s) detected, ${clear} no signal.`, tomcatSunk: shipId => `${name(fleet.find(ship => ship[0] === shipId))} sunk — Tomcat strike!`, enemySunk: shipId => `Enemy ${name(fleet.find(ship => ship[0] === shipId))} sunk!`, shipSunk: shipId => `${name(fleet.find(ship => ship[0] === shipId))} sunk!`, strikeResult: (hit, other) => `Strike resolved: ${hit} hit(s), ${other} other cell(s).`, enemyFireAt: coordinate => `Enemy fires at ${coordinate}.`, enemyHit: 'Enemy hit your ship.', enemyMiss: 'Enemy missed.' },
+                jp: { budget: '装備予算', rotate: '↻ 回転', setupHelp: '艦を選び、向きを決めて自軍グリッドをクリックすると配置できます。ホバーで配置を確認できます。', yourFleet: '自軍艦隊', enemyWaters: '敵海域', start: '戦闘開始', clear: '配置をクリア', combat: '戦闘管制', combatHelp: '敵海域をホバーすると攻撃範囲を確認できます。複数マス攻撃は同時に判定されます。攻撃済みのマスは外れになります。', log: '戦闘ログ', newGame: '新しいゲーム', deploy: '艦隊配置', missile: 'ミサイル - 無料', deployed: '隻を配置済み', invalid: '配置できません。', yourTurn: '自軍のターン', detected: '敵艦隊を探知しました。', ready: '全艦を配置して戦闘を開始してください。', victory: '勝利 — 敵艦隊を撃滅しました。', radarResult: (detected, clear) => `レーダー走査: ${detected} 信号を探知、${clear} 信号なし。`, tomcatSunk: shipId => `${name(fleet.find(ship => ship[0] === shipId))} 撃沈 — トムキャット攻撃！`, enemySunk: shipId => `敵の${name(fleet.find(ship => ship[0] === shipId))}を撃沈！`, shipSunk: shipId => `${name(fleet.find(ship => ship[0] === shipId))}が撃沈されました！`, strikeResult: (hit, other) => `攻撃結果: ${hit} マス命中、その他 ${other} マス。`, enemyFireAt: coordinate => `敵の攻撃地点: ${coordinate}。`, enemyHit: '敵弾が自軍艦に命中しました。', enemyMiss: '敵の攻撃は外れました。' }
             },
             currentText = key => text[jp ? 'jp' : 'en'][key];
         let jp = false,
+            statusKey = 'ready',
+            logEntries = [],
             rot = 0,
             placed = {},
             foe = [],
@@ -70,6 +72,8 @@
                 $('combatHelp').textContent = currentText('combatHelp');
                 $('combatLog').textContent = currentText('log');
                 $('newGame').textContent = currentText('newGame');
+                $('deploy').textContent = currentText('deploy');
+                $('status').textContent = currentText(statusKey);
             },
             cells = () => Array.from({
                 length: 64
@@ -77,9 +81,20 @@
             xy = i => [i % 8, Math.floor(i / 8)],
             at = (x, y) => y * 8 + x;
 
-        function say(t) {
-            $('log').innerHTML += '<div>› ' + t + '</div>';
-            $('log').scrollTop = $('log').scrollHeight
+        function renderLog() {
+            const log = $('log');
+            log.replaceChildren(...logEntries.map(({ key, values }) => {
+                const entry = document.createElement('div'),
+                    message = currentText(key);
+                entry.textContent = '› ' + (typeof message === 'function' ? message(...values) : message);
+                return entry
+            }));
+            log.scrollTop = log.scrollHeight
+        }
+
+        function say(key, ...values) {
+            logEntries.push({ key, values });
+            renderLog()
         }
 
         function layout(s, a, r) {
@@ -217,7 +232,7 @@
         function deploy(i) {
             let s = fleet.find(s => s[0] === $('ship').value),
                 c = layout(s, i, rot);
-            if (c.length !== s[3] || Object.values(placed).some(p => p.c.some(v => c.includes(v)))) return say(currentText('invalid'));
+            if (c.length !== s[3] || Object.values(placed).some(p => p.c.some(v => c.includes(v)))) return say('invalid');
             placed[s[0]] = {
                 s,
                 c,
@@ -244,8 +259,9 @@
                     sunk: false
                 })
             });
-            $('status').textContent = currentText('yourTurn');
-            say(currentText('detected'));
+            statusKey = 'yourTurn';
+            $('status').textContent = currentText(statusKey);
+            say('detected');
             draw()
         }
 
@@ -269,7 +285,7 @@
                     if (foe.some(ship => !ship.sunk && ship.c.includes(cell))) radarDetected.add(cell);
                     else radarClear.add(cell);
                 });
-                say(`${currentText('radar')}: ${radarDetected.size} ${currentText('signal')}, ${radarClear.size} ${currentText('noSignal')}.`);
+                say('radarResult', radarDetected.size, radarClear.size);
                 fill();
                 draw();
                 return;
@@ -286,15 +302,15 @@
                     if (e[2] === 'tomcat') {
                         target.sunk = true;
                         target.c.forEach(cell => sunkCells.add(cell));
-                        say(name(target.s) + ' ' + currentText('tomcat'))
+                        say('tomcatSunk', target.s[0])
                     } else if (target.c.every(x => shots.has(x))) {
                         target.sunk = true;
                         target.c.forEach(cell => sunkCells.add(cell));
-                        say((jp ? '敵' : 'Enemy') + ' ' + name(target.s) + ' ' + currentText('sunk') + '!')
+                        say('enemySunk', target.s[0])
                     }
                 } else misses.add(c)
             });
-            say(`${currentText('strike')}: ${hit} hit(s), ${cellsHit.length - hit} ${currentText('other')}.`);
+            say('strikeResult', hit, cellsHit.length - hit);
             near.clear();
             misses.forEach(cell => {
                 let [x, y] = xy(cell);
@@ -305,7 +321,8 @@
             });
             if (foe.every(s => s.sunk)) {
                 phase = 'over';
-                $('status').textContent = currentText('victory')
+                statusKey = 'victory';
+                $('status').textContent = currentText(statusKey)
             } else {
                 let opts = cells().filter(c => !incoming.has(c)),
                     a = opts[Math.random() * opts.length | 0];
@@ -314,17 +331,17 @@
                 if (target) {
                     incomingHits.add(a);
                     target.hp--;
-                    say(currentText('enemyHit'));
+                    say('enemyHit');
                     if (target.hp <= 0) {
                         target.sunk = true;
                         target.c.forEach(cell => sunkPlayerCells.add(cell));
-                        say(name(target.s) + ' ' + currentText('sunk') + '!');
+                        say('shipSunk', target.s[0]);
                     }
                 } else {
                     incomingMisses.add(a);
-                    say(currentText('enemyMiss'));
+                    say('enemyMiss');
                 }
-                say(currentText('enemyFire') + ' ' + String.fromCharCode(65 + a % 8) + (1 + (a / 8 | 0)) + '.');
+                say('enemyFireAt', String.fromCharCode(65 + a % 8) + (1 + (a / 8 | 0)));
             }
             fill();
             draw()
@@ -348,12 +365,14 @@
             foe = [];
             fill();
             draw();
-            $('status').textContent = currentText('ready')
+            statusKey = 'ready';
+            $('status').textContent = currentText(statusKey)
         }
 
         function reset() {
             clearFleet();
-            $('log').innerHTML = ''
+            logEntries = [];
+            renderLog()
         }
         $('ship').onchange = fill;
         $('rotate').onclick = () => rot = 1 - rot;
@@ -361,8 +380,9 @@
         $('lang').onclick = () => {
             jp = !jp;
             $('lang').textContent = jp ? 'English' : '日本語';
-            $('deploy').textContent = jp ? '艦隊配置' : 'Fleet deployment';
+            document.documentElement.lang = jp ? 'ja' : 'en';
             applyText();
+            renderLog();
             fill();
             draw()
         };

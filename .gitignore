@@ -1,0 +1,15 @@
+# --- DEPENDENCIES ---
+**/node_modules/
+**/.agents/
+
+# --- ENVIRONMENT & SECRETS ---
+**/.env
+
+# --- BUILD & DIST OUTPUTS ---
+**/dist/
+**/build/
+
+# --- LOGS & OS FILES ---
+**/*.log
+**/*.DS_Store
+**/Thumbs.db
