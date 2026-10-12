@@ -10,7 +10,7 @@ currently supports English and Japanese.
 ## Project layout
 
 - `prototype/` — playable HTML, CSS, and JavaScript single-player prototype.
-- `frontend/` — React Router and React frontend starter.
+- `frontend/` — React Router game frontend.
 - `backend/` — Express API starter and OpenAPI definition.
 
 ## Current functionality
@@ -19,10 +19,13 @@ currently supports English and Japanese.
   equipment budget, equipment attacks, and a basic random-attack AI.
 - The prototype can be switched between English and Japanese, including
   existing combat-log entries and the current status message.
+- The React frontend now has a componentized single-player port with fleet
+  deployment, equipment attacks, random AI, bilingual controls, and combat log.
+- Equipment belonging to a player's sunk ship is disabled and cannot be fired.
 - The backend currently provides a health endpoint and Swagger UI at `/docs`.
 
-The React frontend is still the framework starter; it is not yet connected to
-the prototype or backend. The backend does not yet provide accounts, game
+The React frontend runs the game locally in the browser; it is not yet
+connected to the backend. The backend does not yet provide accounts, game
 sessions, or persistent storage.
 
 ## Planned gameplay and services
@@ -58,7 +61,7 @@ variables, then run `npm run dev`. The health check is available at `/health`;
 the API documentation is available at `/docs`.
 
 For the React frontend, run `npm ci` in `frontend/` followed by `npm run dev`.
-It remains an unconnected starter application.
+Open the displayed local URL to play the React implementation.
 
 ## Clean-room note
 

@@ -1,13 +1,16 @@
 import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import { SeaBattleGame } from "../components/game/SeaBattleGame";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Sea Battle Tactics" },
+    {
+      name: "description",
+      content: "Single-player naval strategy game prototype.",
+    },
   ];
 }
 
 export default function Home() {
-  return <Welcome />;
+  return <SeaBattleGame />;
 }

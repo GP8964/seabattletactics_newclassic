@@ -159,7 +159,7 @@
             s.innerHTML = fleet.filter(x => !placed[x[0]]).map(x => `<option value="${x[0]}">${name(x)}</option>`).join('');
             let cur = fleet.find(x => x[0] === s.value) || fleet[0];
             $('equip').innerHTML = cur[4].map((e, i) => `<option value="${i}" ${cost + e[1] > 60 ? 'disabled' : ''}>${equipmentName(e)} — ${e[1]} pts</option>`).join('');
-            $('attack').innerHTML = `<option value="normal">${currentText('missile')}</option>` + fleet.flatMap(s => s[4].map((e, i) => `<option value="${s[0]}:${i}" ${cost + e[1] > 60 ? 'disabled' : ''}>${name(s)} / ${equipmentName(e)} (${e[1]})</option>`)).join('')
+            $('attack').innerHTML = `<option value="normal">${currentText('missile')}</option>` + fleet.flatMap(s => s[4].map((e, i) => `<option value="${s[0]}:${i}" ${cost + e[1] > 60 || placed[s[0]]?.sunk ? 'disabled' : ''}>${name(s)} / ${equipmentName(e)} (${e[1]})</option>`)).join('')
         }
 
         function updatePreview() {
@@ -272,13 +272,13 @@
             if (v !== 'normal') {
                 let [id, k] = v.split(':');
                 sp = fleet.find(s => s[0] === id);
+                if (placed[id]?.sunk) return;
                 e = sp[4][+k];
                 cost += e[1]
             }
             let cellsHit = v === 'normal' ? [i] : pattern(e[2], i),
                 hit = 0;
             if (isRadar(e[2])) {
-                cost += e[1];
                 radarDetected.clear();
                 radarClear.clear();
                 cellsHit.forEach(cell => {
