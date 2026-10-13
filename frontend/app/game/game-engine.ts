@@ -29,6 +29,9 @@ export function createGame(): GameState {
     radarClear: [],
     creditsUsed: 0,
     statusKey: "ready",
+    statusValues: [],
+    pendingTargets: [],
+    pendingWeapon: null,
     log: [],
   };
 }
@@ -69,11 +72,7 @@ export function getAttackPattern(pattern: string, anchor: number) {
     );
   }
   if (pattern.startsWith("pick")) {
-    const count = Number(pattern.slice(4));
-    return Array.from(
-      { length: count },
-      () => Math.floor(Math.random() * BOARD_SIZE * BOARD_SIZE),
-    );
+    return [anchor];
   }
 
   const size: Record<string, number> = {
@@ -90,8 +89,22 @@ export function getAttackPattern(pattern: string, anchor: number) {
     sparse: 5,
   };
   const n = size[pattern] ?? 1;
-  if (!isRadar(pattern) && (x + n > BOARD_SIZE || y + n > BOARD_SIZE)) {
-    return [];
+  if (!isRadar(pattern)) {
+    if (
+      (pattern === "row3" || pattern === "row4") &&
+      x + n > BOARD_SIZE
+    ) {
+      return [];
+    }
+    if (pattern === "col4" && y + n > BOARD_SIZE) return [];
+    if (
+      pattern !== "row3" &&
+      pattern !== "row4" &&
+      pattern !== "col4" &&
+      (x + n > BOARD_SIZE || y + n > BOARD_SIZE)
+    ) {
+      return [];
+    }
   }
 
   if (pattern.startsWith("area")) {
@@ -158,6 +171,17 @@ export function getAttackPreviewPattern(pattern: string, anchor: number) {
   return pattern.startsWith("pick")
     ? [anchor]
     : getAttackPattern(pattern, anchor);
+}
+
+export function cancelTargetSelection(current: GameState) {
+  if (!current.pendingTargets.length) return current;
+  return {
+    ...current,
+    pendingTargets: [],
+    pendingWeapon: null,
+    statusKey: "yourTurn",
+    statusValues: [],
+  };
 }
 
 function appendLog(
@@ -234,12 +258,15 @@ export function beginBattle(current: GameState) {
   ) {
     return current;
   }
-  const next = {
+  const next: GameState = {
     ...current,
     phase: "battle" as const,
     enemyFleet: randomFleet(),
     log: [...current.log],
     statusKey: "yourTurn",
+    statusValues: [],
+    pendingTargets: [],
+    pendingWeapon: null,
   };
   appendLog(next, "detected");
   return next;
@@ -269,6 +296,7 @@ export function fireAt(
     sunkPlayerCells: [...current.sunkPlayerCells],
     radarDetected: [...current.radarDetected],
     radarClear: [...current.radarClear],
+    pendingTargets: [...current.pendingTargets],
     log: [...current.log],
   };
   let weaponPattern = "normal";
@@ -283,11 +311,37 @@ export function fireAt(
     weaponPattern = equipment.pattern;
     cost = equipment.cost;
   }
-  if (current.creditsUsed + cost > EQUIPMENT_BUDGET) return current;
+  let targets: number[];
+  if (weaponPattern.startsWith("pick")) {
+    const selectedTargets =
+      current.pendingWeapon === weaponValue ? [...current.pendingTargets] : [];
+    if (selectedTargets.includes(anchor)) return current;
+    selectedTargets.push(anchor);
+    const required = Number(weaponPattern.slice(4));
+    if (selectedTargets.length < required) {
+      next.pendingTargets = selectedTargets;
+      next.pendingWeapon = weaponValue;
+      next.statusKey = "pickProgress";
+      next.statusValues = [selectedTargets.length, required];
+      return next;
+    }
+    targets = selectedTargets;
+    next.pendingTargets = [];
+    next.pendingWeapon = null;
+  } else {
+    targets =
+      weaponPattern === "normal"
+        ? [anchor]
+        : getAttackPattern(weaponPattern, anchor);
+    next.pendingTargets = [];
+    next.pendingWeapon = null;
+  }
+  if (!targets.length || current.creditsUsed + cost > EQUIPMENT_BUDGET) {
+    return current;
+  }
   next.creditsUsed += cost;
-
-  const targets =
-    weaponPattern === "normal" ? [anchor] : getAttackPattern(weaponPattern, anchor);
+  next.statusKey = "yourTurn";
+  next.statusValues = [];
   if (isRadar(weaponPattern)) {
     next.radarDetected = [];
     next.radarClear = [];

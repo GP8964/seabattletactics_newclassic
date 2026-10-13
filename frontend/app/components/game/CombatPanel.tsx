@@ -33,12 +33,17 @@ export function CombatPanel({
   ];
   const preview =
     hoveredCell === null
-      ? []
+      ? game.pendingTargets
       : weapon === "normal"
-        ? [hoveredCell]
+        ? [...game.pendingTargets, hoveredCell]
         : equipment
-          ? getAttackPreviewPattern(equipment.pattern, hoveredCell)
-          : [];
+          ? [
+              ...new Set([
+                ...game.pendingTargets,
+                ...getAttackPreviewPattern(equipment.pattern, hoveredCell),
+              ]),
+            ]
+          : game.pendingTargets;
 
   return (
     <section className="panel combat-panel">
@@ -108,7 +113,7 @@ export function CombatPanel({
 
       <div className={`battle-status status-${game.phase}`} role="status">
         <span className="status-light" />
-        {translate(language, game.statusKey)}
+        {translate(language, game.statusKey, ...game.statusValues)}
       </div>
 
       <section className="log-section" aria-labelledby="combat-log-title">

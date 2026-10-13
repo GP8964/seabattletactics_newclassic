@@ -22,6 +22,8 @@ currently supports English and Japanese.
 - The React frontend now has a componentized single-player port with fleet
   deployment, equipment attacks, random AI, bilingual controls, and combat log.
 - Equipment belonging to a player's sunk ship is disabled and cannot be fired.
+- Harrier and multi-torpedo attacks let players choose each target cell;
+  changing weapons cancels an incomplete salvo.
 - The backend currently provides a health endpoint and Swagger UI at `/docs`.
 
 The React frontend runs the game locally in the browser; it is not yet

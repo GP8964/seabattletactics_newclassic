@@ -86,7 +86,7 @@ export function GameBoard({
               ? shipName(ship.shipId, language)
               : "";
             const mark = sunk
-              ? translate(language, "sunk")
+              ? "S"
               : enemyHit || incomingHit
                 ? "×"
                 : missed
@@ -102,7 +102,7 @@ export function GameBoard({
                 type="button"
                 key={cell}
                 className={cellClasses}
-                aria-label={`${col}${row}${shipDescription ? `, ${shipDescription}` : ""}${mark ? `, ${mark}` : ""}`}
+                aria-label={`${col}${row}${shipDescription ? `, ${shipDescription}` : ""}${sunk ? `, ${translate(language, "sunk")}` : mark ? `, ${mark}` : ""}`}
                 title={shipDescription}
                 disabled={!interactive}
                 onClick={() => onCellClick(cell)}

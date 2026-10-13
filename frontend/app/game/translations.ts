@@ -39,6 +39,8 @@ const messages: Record<Language, Record<string, Message>> = {
       "Hover enemy waters to preview a strike. All cells in a multi-cell strike resolve together. Repeated cells count as misses.",
     ready: "Deploy all ships to begin.",
     yourTurn: "Your turn",
+    pickProgress: (selected, total) =>
+      `Select ${Number(total) - Number(selected)} more target cell(s) (${selected}/${total}). Changing weapon cancels this attack.`,
     detected: "Enemy fleet detected.",
     invalid: "Invalid placement.",
     missile: "Missile - free",
@@ -95,6 +97,8 @@ const messages: Record<Language, Record<string, Message>> = {
       "敵海域をホバーすると攻撃範囲を確認できます。複数マス攻撃は同時に判定されます。攻撃済みのマスは外れになります。",
     ready: "全艦を配置して戦闘を開始してください。",
     yourTurn: "自軍のターン",
+    pickProgress: (selected, total) =>
+      `攻撃目標をあと${Number(total) - Number(selected)}マス選択してください（${selected}/${total}）。兵装を変更すると攻撃はキャンセルされます。`,
     detected: "敵艦隊を探知しました。",
     invalid: "配置できません。",
     missile: "ミサイル - 無料",

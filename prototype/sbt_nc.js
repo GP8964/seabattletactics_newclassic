@@ -32,13 +32,16 @@
                 ]]
             ],
             text = {
-                en: { budget: 'Equipment budget', rotate: '↻ Rotate', setupHelp: 'Choose a ship, rotate if needed, then click your grid to deploy. Hover previews placement.', yourFleet: 'Your fleet', enemyWaters: 'Enemy waters', start: 'Begin battle', clear: 'Clear deployment', combat: 'Combat control', combatHelp: 'Hover enemy waters to preview a strike. All cells in a multi-cell strike resolve together. Repeated cells count as misses.', log: 'Combat log', newGame: 'New game', deploy: 'Fleet deployment', missile: 'Missile - free', deployed: 'ships deployed', invalid: 'Invalid placement.', yourTurn: 'Your turn', detected: 'Enemy fleet detected.', ready: 'Deploy all ships to begin.', victory: 'Victory — enemy fleet neutralized.', radarResult: (detected, clear) => `Radar scan: ${detected} signal(s) detected, ${clear} no signal.`, tomcatSunk: shipId => `${name(fleet.find(ship => ship[0] === shipId))} sunk — Tomcat strike!`, enemySunk: shipId => `Enemy ${name(fleet.find(ship => ship[0] === shipId))} sunk!`, shipSunk: shipId => `${name(fleet.find(ship => ship[0] === shipId))} sunk!`, strikeResult: (hit, other) => `Strike resolved: ${hit} hit(s), ${other} other cell(s).`, enemyFireAt: coordinate => `Enemy fires at ${coordinate}.`, enemyHit: 'Enemy hit your ship.', enemyMiss: 'Enemy missed.' },
-                jp: { budget: '装備予算', rotate: '↻ 回転', setupHelp: '艦を選び、向きを決めて自軍グリッドをクリックすると配置できます。ホバーで配置を確認できます。', yourFleet: '自軍艦隊', enemyWaters: '敵海域', start: '戦闘開始', clear: '配置をクリア', combat: '戦闘管制', combatHelp: '敵海域をホバーすると攻撃範囲を確認できます。複数マス攻撃は同時に判定されます。攻撃済みのマスは外れになります。', log: '戦闘ログ', newGame: '新しいゲーム', deploy: '艦隊配置', missile: 'ミサイル - 無料', deployed: '隻を配置済み', invalid: '配置できません。', yourTurn: '自軍のターン', detected: '敵艦隊を探知しました。', ready: '全艦を配置して戦闘を開始してください。', victory: '勝利 — 敵艦隊を撃滅しました。', radarResult: (detected, clear) => `レーダー走査: ${detected} 信号を探知、${clear} 信号なし。`, tomcatSunk: shipId => `${name(fleet.find(ship => ship[0] === shipId))} 撃沈 — トムキャット攻撃！`, enemySunk: shipId => `敵の${name(fleet.find(ship => ship[0] === shipId))}を撃沈！`, shipSunk: shipId => `${name(fleet.find(ship => ship[0] === shipId))}が撃沈されました！`, strikeResult: (hit, other) => `攻撃結果: ${hit} マス命中、その他 ${other} マス。`, enemyFireAt: coordinate => `敵の攻撃地点: ${coordinate}。`, enemyHit: '敵弾が自軍艦に命中しました。', enemyMiss: '敵の攻撃は外れました。' }
+                en: { budget: 'Equipment budget', rotate: '↻ Rotate', setupHelp: 'Choose a ship, rotate if needed, then click your grid to deploy. Hover previews placement.', yourFleet: 'Your fleet', enemyWaters: 'Enemy waters', start: 'Begin battle', clear: 'Clear deployment', combat: 'Combat control', combatHelp: 'Hover enemy waters to preview a strike. All cells in a multi-cell strike resolve together. Repeated cells count as misses.', log: 'Combat log', newGame: 'New game', deploy: 'Fleet deployment', missile: 'Missile - free', deployed: 'ships deployed', invalid: 'Invalid placement.', yourTurn: 'Your turn', detected: 'Enemy fleet detected.', ready: 'Deploy all ships to begin.', victory: 'Victory — enemy fleet neutralized.', pickProgress: (selected, total) => `Select ${total - selected} more target cell(s) (${selected}/${total}). Changing weapon cancels this attack.`, radarResult: (detected, clear) => `Radar scan: ${detected} signal(s) detected, ${clear} no signal.`, tomcatSunk: shipId => `${name(fleet.find(ship => ship[0] === shipId))} sunk — Tomcat strike!`, enemySunk: shipId => `Enemy ${name(fleet.find(ship => ship[0] === shipId))} sunk!`, shipSunk: shipId => `${name(fleet.find(ship => ship[0] === shipId))} sunk!`, strikeResult: (hit, other) => `Strike resolved: ${hit} hit(s), ${other} other cell(s).`, enemyFireAt: coordinate => `Enemy fires at ${coordinate}.`, enemyHit: 'Enemy hit your ship.', enemyMiss: 'Enemy missed.' },
+                jp: { budget: '装備予算', rotate: '↻ 回転', setupHelp: '艦を選び、向きを決めて自軍グリッドをクリックすると配置できます。ホバーで配置を確認できます。', yourFleet: '自軍艦隊', enemyWaters: '敵海域', start: '戦闘開始', clear: '配置をクリア', combat: '戦闘管制', combatHelp: '敵海域をホバーすると攻撃範囲を確認できます。複数マス攻撃は同時に判定されます。攻撃済みのマスは外れになります。', log: '戦闘ログ', newGame: '新しいゲーム', deploy: '艦隊配置', missile: 'ミサイル - 無料', deployed: '隻を配置済み', invalid: '配置できません。', yourTurn: '自軍のターン', detected: '敵艦隊を探知しました。', ready: '全艦を配置して戦闘を開始してください。', victory: '勝利 — 敵艦隊を撃滅しました。', pickProgress: (selected, total) => `攻撃目標をあと${total - selected}マス選択してください（${selected}/${total}）。兵装を変更すると攻撃はキャンセルされます。`, radarResult: (detected, clear) => `レーダー走査: ${detected} 信号を探知、${clear} 信号なし。`, tomcatSunk: shipId => `${name(fleet.find(ship => ship[0] === shipId))} 撃沈 — トムキャット攻撃！`, enemySunk: shipId => `敵の${name(fleet.find(ship => ship[0] === shipId))}を撃沈！`, shipSunk: shipId => `${name(fleet.find(ship => ship[0] === shipId))}が撃沈されました！`, strikeResult: (hit, other) => `攻撃結果: ${hit} マス命中、その他 ${other} マス。`, enemyFireAt: coordinate => `敵の攻撃地点: ${coordinate}。`, enemyHit: '敵弾が自軍艦に命中しました。', enemyMiss: '敵の攻撃は外れました。' }
             },
             currentText = key => text[jp ? 'jp' : 'en'][key];
         let jp = false,
             statusKey = 'ready',
+            statusValues = [],
             logEntries = [],
+            pendingTargets = [],
+            pendingWeapon = null,
             rot = 0,
             placed = {},
             foe = [],
@@ -73,7 +76,8 @@
                 $('combatLog').textContent = currentText('log');
                 $('newGame').textContent = currentText('newGame');
                 $('deploy').textContent = currentText('deploy');
-                $('status').textContent = currentText(statusKey);
+                const message = currentText(statusKey);
+                $('status').textContent = typeof message === 'function' ? message(...statusValues) : message;
             },
             cells = () => Array.from({
                 length: 64
@@ -97,6 +101,13 @@
             renderLog()
         }
 
+        function setStatus(key, ...values) {
+            statusKey = key;
+            statusValues = values;
+            const message = currentText(key);
+            $('status').textContent = typeof message === 'function' ? message(...values) : message
+        }
+
         function layout(s, a, r) {
             let [x, y] = xy(a), out = [], w = s[0] === 'cv' ? (r ? 2 : 4) : (r ? 1 : s[3]), h = s[0] === 'cv' ? (r ? 4 : 2) : (r ? s[3] : 1);
             if (x + w > 8 || y + h > 8) return [];
@@ -113,11 +124,13 @@
             if (k === 'column') return Array.from({
                 length: 8
             }, (_, j) => at(x, j));
-            if (k.startsWith('pick')) return Array.from({
-                length: +k.slice(4)
-            }, () => Math.floor(Math.random() * 64));
+            if (k.startsWith('pick')) return [a];
             let n = k === 'area3' ? 3 : k === 'area2' ? 2 : k === 'corners4' ? 4 : k === 'corners5' ? 5 : k === 'ring' ? 3 : k === 'row3' ? 3 : k === 'row4' || k === 'col4' ? 4 : k === 'radar' ? 2 : k === 'sps5' || k === 'sparse' ? 5 : 1;
-            if (!isRadar(k) && (x + n > 8 || y + n > 8)) return [];
+            if (!isRadar(k)) {
+                if ((k === 'row3' || k === 'row4') && x + n > 8) return [];
+                if (k === 'col4' && y + n > 8) return [];
+                if (!['row3', 'row4', 'col4'].includes(k) && (x + n > 8 || y + n > 8)) return [];
+            }
             if (k.startsWith('area')) {
                 for (let j = 0; j < n; j++)
                     for (let i = 0; i < n; i++) add(i, j)
@@ -199,6 +212,7 @@
                         if (radarClear.has(i)) c.classList.add('radar-clear');
                     }
                     if (previewBoard === (own ? 'player' : 'enemy') && preview.includes(i)) c.classList.add('preview');
+                    if (!own && pendingTargets.includes(i)) c.classList.add('pick-selected');
                     c.onmouseenter = () => {
                         if (phase === 'setup' && own) {
                             previewBoard = 'player';
@@ -211,7 +225,7 @@
                                 sp = fleet.find(s => s[0] === v.split(':')[0]) || fleet[0],
                                 e = sp[4][+v.split(':')[1]];
                             previewBoard = 'enemy';
-                            preview = v === 'normal' ? [i] : pattern(e[2], i);
+                            preview = v === 'normal' || e[2].startsWith('pick') ? [i] : pattern(e[2], i);
                             updatePreview()
                         }
                     };
@@ -259,8 +273,7 @@
                     sunk: false
                 })
             });
-            statusKey = 'yourTurn';
-            $('status').textContent = currentText(statusKey);
+            setStatus('yourTurn');
             say('detected');
             draw()
         }
@@ -268,16 +281,36 @@
         function fire(i) {
             let v = $('attack').value,
                 sp = fleet[0],
-                e = ['Normal', 0, 'normal'];
+                e = ['Normal', 0, 'normal'],
+                cellsHit;
             if (v !== 'normal') {
                 let [id, k] = v.split(':');
                 sp = fleet.find(s => s[0] === id);
                 if (placed[id]?.sunk) return;
                 e = sp[4][+k];
-                cost += e[1]
             }
-            let cellsHit = v === 'normal' ? [i] : pattern(e[2], i),
-                hit = 0;
+            if (e[2].startsWith('pick')) {
+                if (pendingWeapon !== v) {
+                    pendingTargets = [];
+                    pendingWeapon = v;
+                }
+                if (pendingTargets.includes(i)) return;
+                pendingTargets.push(i);
+                const required = +e[2].slice(4);
+                if (pendingTargets.length < required) {
+                    setStatus('pickProgress', pendingTargets.length, required);
+                    draw();
+                    return;
+                }
+                cellsHit = [...pendingTargets];
+                pendingTargets = [];
+                pendingWeapon = null;
+            } else {
+                cellsHit = v === 'normal' ? [i] : pattern(e[2], i);
+            }
+            if (!cellsHit.length) return;
+            if (v !== 'normal') cost += e[1];
+            let hit = 0;
             if (isRadar(e[2])) {
                 radarDetected.clear();
                 radarClear.clear();
@@ -321,9 +354,9 @@
             });
             if (foe.every(s => s.sunk)) {
                 phase = 'over';
-                statusKey = 'victory';
-                $('status').textContent = currentText(statusKey)
+                setStatus('victory')
             } else {
+                setStatus('yourTurn');
                 let opts = cells().filter(c => !incoming.has(c)),
                     a = opts[Math.random() * opts.length | 0];
                 incoming.add(a);
@@ -363,10 +396,11 @@
             radarDetected.clear();
             radarClear.clear();
             foe = [];
+            pendingTargets = [];
+            pendingWeapon = null;
             fill();
             draw();
-            statusKey = 'ready';
-            $('status').textContent = currentText(statusKey)
+            setStatus('ready')
         }
 
         function reset() {
@@ -375,6 +409,14 @@
             renderLog()
         }
         $('ship').onchange = fill;
+        $('attack').onchange = () => {
+            if (pendingTargets.length) {
+                pendingTargets = [];
+                pendingWeapon = null;
+                setStatus('yourTurn');
+                draw()
+            }
+        };
         $('rotate').onclick = () => rot = 1 - rot;
         $('start').onclick = begin;
         $('lang').onclick = () => {

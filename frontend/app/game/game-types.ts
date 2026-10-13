@@ -29,5 +29,8 @@ export type GameState = {
   radarClear: number[];
   creditsUsed: number;
   statusKey: string;
+  statusValues: (string | number)[];
+  pendingTargets: number[];
+  pendingWeapon: string | null;
   log: LogEntry[];
 };

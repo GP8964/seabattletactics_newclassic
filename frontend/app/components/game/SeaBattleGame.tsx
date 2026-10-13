@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FLEET, type Language } from "../../game/game-data";
 import {
   beginBattle,
+  cancelTargetSelection,
   clearFleet,
   createGame,
   deployShip,
@@ -65,6 +66,12 @@ export function SeaBattleGame() {
     setHoveredCell(null);
   };
 
+  const changeWeapon = (nextWeapon: string) => {
+    setGame(cancelTargetSelection(game));
+    setWeapon(nextWeapon);
+    setHoveredCell(null);
+  };
+
   return (
     <div className="game-shell">
       <GameHeader
@@ -120,7 +127,7 @@ export function SeaBattleGame() {
             language={language}
             weapon={weapon}
             hoveredCell={game.phase === "battle" ? hoveredCell : null}
-            onWeaponChange={setWeapon}
+            onWeaponChange={changeWeapon}
             onFire={fire}
             onHover={preview}
             onLeave={() => setHoveredCell(null)}

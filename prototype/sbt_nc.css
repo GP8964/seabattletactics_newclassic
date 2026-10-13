@@ -205,6 +205,12 @@
         background: #246e5a
     }
 
+    .cell.pick-selected {
+        outline: 2px solid #f4d36b;
+        outline-offset: -3px;
+        background: #66552a
+    }
+
     .cell.bad {
         outline-color: var(--red)
     }
